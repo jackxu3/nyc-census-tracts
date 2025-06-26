@@ -140,7 +140,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This R code begins by loading the tidyverse package and reading the nyc_tracts.csv file while specifying that all columns should initially be read as character data. The data is then cleaned and transformed by splitting the tract column into separate tract_id, county, and state columns using separate(). The med_income column, originally character, is converted to numeric, with “NA” strings replaced by actual missing values. The county names are cleaned by removing the word “ County” for simplicity. Rows with missing median income are filtered out to ensure valid data for analysis. Finally, the code creates a detailed boxplot visualization of median income distributions across NYC counties, grouped by race. It enhances readability by adding jittered points to show individual data observations, facets the plot by race with free y-axis scales for better comparison, formats the income axis as dollars, and adjusts text and layout for clarity and presentation quality.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -150,6 +149,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+<p>This R code begins by loading the tidyverse package and reading the nyc_tracts.csv file while specifying that all columns should initially be read as character data. The data is then cleaned and transformed by splitting the tract column into separate tract_id, county, and state columns using separate(). The med_income column, originally character, is converted to numeric, with “NA” strings replaced by actual missing values. The county names are cleaned by removing the word “ County” for simplicity. Rows with missing median income are filtered out to ensure valid data for analysis. Finally, the code creates a detailed boxplot visualization of median income distributions across NYC counties, grouped by race. It enhances readability by adding jittered points to show individual data observations, facets the plot by race with free y-axis scales for better comparison, formats the income axis as dollars, and adjusts text and layout for clarity and presentation quality.</p>
 
 
 
