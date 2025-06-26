@@ -1,9 +1,50 @@
 ---
 title: "Census Tracts"
+author: "Jack Xu"
+execute:
+  echo: FALSE
+  warning: FALSE
+  message: FALSE
 ---
 
-New York Census Tracts
+```{r}
+library(tidyverse) 
+data_raw <- read_csv("data/nyc_tracts.csv",
+                     col_types = cols(
+                       tract = col_character(),
+                       race = col_character(),
+                       med_income = col_character() 
+                     ))
+```
 
-This is a Quarto website.
+```{r}
+nyc_data <- data_raw %>%
+  separate(tract, into = c("tract_id", "county_state"), sep = "; ", extra = "merge") %>%
+  separate(county_state, into = c("county", "state"), sep = "; ", extra = "merge") %>%
+  mutate(
+    med_income = as.numeric(na_if(med_income, "NA")), # Now med_income is character, so na_if works
+    county = str_remove(county, " County") # Clean up county names
+  ) %>%
+  filter(!is.na(med_income)) # Remove rows where median income is NA
+# Create the graphic
+ggplot(nyc_data, aes(x = county, y = med_income, fill = race)) +
+  geom_boxplot(outlier.shape = NA) + # Use box plots to show distribution, hide outliers for cleaner look
+  geom_jitter(aes(color = race), width = 0.2, alpha = 0.6, size = 1.5) + # Add jittered points to show individual data points
+  facet_wrap(~ race, scales = "free_y") + # Separate plots by race, with free y-scales for better comparison
+  labs(
+    title = "Median Income Distribution by Race and County in NYC Census Tracts",
+    x = "County",
+    y = "Median Income ($)",
+    fill = "Race",
+    color = "Race"
+  ) +
+  scale_y_continuous(labels = scales::dollar) + # Format y-axis as currency
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1), # Rotate x-axis labels for readability
+    plot.title = element_text(hjust = 0.5, face = "bold"), # Center and bold the title
+    strip.text = element_text(face = "bold") # Bold facet titles
+  )
+```
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+This R code begins by loading the tidyverse package and reading the nyc_tracts.csv file while specifying that all columns should initially be read as character data. The data is then cleaned and transformed by splitting the tract column into separate tract_id, county, and state columns using separate(). The med_income column, originally character, is converted to numeric, with "NA" strings replaced by actual missing values. The county names are cleaned by removing the word “ County” for simplicity. Rows with missing median income are filtered out to ensure valid data for analysis. Finally, the code creates a detailed boxplot visualization of median income distributions across NYC counties, grouped by race. It enhances readability by adding jittered points to show individual data observations, facets the plot by race with free y-axis scales for better comparison, formats the income axis as dollars, and adjusts text and layout for clarity and presentation quality.
